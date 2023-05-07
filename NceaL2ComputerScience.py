@@ -3,5 +3,5 @@ from tkinter import *
 import time
 root = tk.Tk()
 
-root.geometry("650x500")
+root.geometry("1200x800-40+0")
 root.mainloop()
