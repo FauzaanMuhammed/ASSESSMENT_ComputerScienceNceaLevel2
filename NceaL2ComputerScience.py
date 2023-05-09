@@ -5,7 +5,7 @@ root = tk.Tk()
 image_placeholder = Label(root,text="Image",height="5")
 image_placeholder.grid(column=0,row=0)
 
-title_label = Label(root,text="Julie’s Party Hire",font=(("Arial"),20))
+title_label = Label(root,text="Julie’s Party Hire",font=(("Elephant"),20))
 title_label.place(x=475,y=0)
 
 #Customer name title and entry
