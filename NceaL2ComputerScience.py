@@ -27,7 +27,7 @@ customer_name_entry.grid(column=1,row=2)
 #Recipt Number title and entry
 recipt_number_title = Label(root,text="Recipt Number",font=(("Arial"),14)) # Width=33 is not used, as width covers both
 recipt_number_title.grid(column=2,row=1)   
-                     # To the right and left of the element        
+                                                            # To the right and left of the element        
 recipt_number_entry = Entry(root,width="25")                # Therefore, it only needs to be used for every odd element
 recipt_number_entry.grid(column=2,row=2)
 
@@ -46,7 +46,7 @@ num_item_hired_entry = Entry(root,width="25")
 num_item_hired_entry.grid(column=4,row=2)
 
 #Enter Data Button
-enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),justify="center")
+enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14))
 enter_data_button.place(x=500,y=290)
 
 
