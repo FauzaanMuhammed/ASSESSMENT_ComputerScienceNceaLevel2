@@ -14,11 +14,11 @@ panel = Label(root, image = img)
 panel.place(x=500,y=30)
 
 #Title
-title_label = Label(root,text="Julie’s Party Hire",font=(("Elephant"),20))
+title_label = Label(root,text="Julie’s Party Hire",font=(("Elephant"),20)) # The elephant font stands out compared to the rest of the text
 title_label.place(x=475,y=0)
 
 #Exit Button
-exit_button=Button(root,text="QUIT",bg="#B50404",fg="white",command=quit)
+exit_button=Button(root,text="QUIT",bg="#B50404",fg="white",command=quit) 
 exit_button.place(x=1160,y=0)
 def quit():  # The function for quitting
     root.destroy() 
