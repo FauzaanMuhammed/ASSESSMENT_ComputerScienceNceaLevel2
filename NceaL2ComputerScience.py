@@ -9,9 +9,9 @@ root = tk.Tk()
 placeholder = Label(root,text="",height="15",width=5)
 placeholder.grid(column=0,row=0)
 
-img = ImageTk.PhotoImage(Image.open('computer_science_image.jpg'))
-panel = Label(root, image = img)
-panel.place(x=500,y=30)
+img = ImageTk.PhotoImage(Image.open('computer_science_image.jpg')) # Opens computer_science_image.jpg, another file associated with the repo.
+img_panel = Label(root, image = img)
+img_panel.place(x=500,y=30)
 
 #Title
 title_label = Label(root,text="Julie’s Party Hire",font=(("Elephant"),20)) # The elephant font stands out compared to the rest of the text
@@ -21,7 +21,7 @@ title_label.place(x=475,y=0)
 exit_button=Button(root,text="QUIT",bg="#B50404",fg="white",command=quit) 
 exit_button.place(x=1160,y=0)
 def quit():  # The function for quitting
-    root.destroy() 
+    root.destroy()
 
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
@@ -51,9 +51,14 @@ num_item_hired_title.grid(column=4,row=1)
 num_item_hired_entry = Entry(root,width="25")
 num_item_hired_entry.grid(column=4,row=2)
 
+# Main function
+def main_function():
+    pass
+
 #Enter Data Button
-enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14))
+enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=290)
+
 
 
 root.geometry("1200x800-40+0")
