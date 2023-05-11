@@ -51,14 +51,29 @@ num_item_hired_title.grid(column=4,row=1)
 num_item_hired_entry = Entry(root,width="25")
 num_item_hired_entry.grid(column=4,row=2)
 
-# Main function
+
+# Main function for enter data button
 def main_function():
-    pass
+    customer_name = customer_name_entry.get()
+    recipt_number = recipt_number_entry.get()
+    item_hired = item_hired_entry.get()
+    num_item_hired = num_item_hired_entry.get()
+    try:
+        if 0<int(num_item_hired)<501:
+            error_text["text"]=""
+        else:
+            error_text["text"]="Error! Number must be 1-500!"
+    except:
+        error_text["text"]="Error! Please put a number between 1-500 no letters"
+
 
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=290)
 
+#Error Text
+error_text=Label(root,font=(("Arial"),14))
+error_text.place(x=500,y=330)
 
 
 root.geometry("1200x800-40+0")
