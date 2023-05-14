@@ -1,7 +1,16 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 import time 
 from PIL import Image,ImageTk
+
+global client_list;client_list=[]
+global customer_name 
+global recipt_number
+global item_hired
+global num_item_hired
+
+
 
 root = tk.Tk()
 
@@ -59,13 +68,35 @@ def main_function():
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
     try:
+        test=int(recipt_number)+1
+        recipt_number_title["fg"]="black"
+        recipt_memo=""
+    except:
+        recipt_number_title["fg"]="red" 
+        recipt_memo="\n'Error! Please put any number for 'recipt number'"
+        error_text["text"]=recipt_memo
+    try:        # Checking if num_item_checked is between 1-500 AND is not a string, no errors come as a result
         if 0<int(num_item_hired)<501:
-            error_text["text"]=""
+            error_text["text"]=""+recipt_memo
+            num_item_hired_title["fg"]="black"
         else:
             error_text["text"]="Error! Number must be 1-500!"
+            num_item_hired_title["fg"]="red"
     except:
-        error_text["text"]="Error! Please put a number between 1-500 no letters"
+        error_text["text"]=f"Error! Please put a number between 1-500 no letters for 'number hired' {recipt_memo}"
+        num_item_hired_title["fg"]="red"
 
+    if error_text["text"]=="":
+        column_list=("customer_name","recipt_number","item_hired","number_hired") 
+        treeview = ttk.Treeview(root,columns=column_list,height=11)
+        treeview.column("#0", width=0,)
+        treeview.heading("customer_name",text="Customer Name")
+        treeview.heading("recipt_number",text="Recipt Number")
+        treeview.heading("item_hired",text="Item Hired")
+        treeview.heading("number_hired",text="Number Hired")
+        treeview.place(x=200,y=380)
+
+    
 
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
@@ -73,7 +104,7 @@ enter_data_button.place(x=500,y=290)
 
 #Error Text
 error_text=Label(root,font=(("Arial"),14))
-error_text.place(x=500,y=330)
+error_text.place(x=300,y=330)
 
 
 root.geometry("1200x800-40+0")
