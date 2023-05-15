@@ -68,39 +68,54 @@ def main_function():
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
     try:
-        test=int(recipt_number)+1
+        test=int(recipt_number)+1 #Try adding 1 to the recipt number.
         recipt_number_title["fg"]="black"
-        recipt_memo=""
-    except:
+        recipt_memo="" # Recipt memo variable allows us to add messages to the end of error messages without creating a new function
+    except:            # If 1 can't be added to recipt number i.e it's a string, throw an error
         recipt_number_title["fg"]="red" 
-        recipt_memo="\n'Error! Please put any number for 'recipt number'"
-        error_text["text"]=recipt_memo
+        recipt_memo="'Error! Please put any number for 'recipt number'"
+        error_text["text"]=recipt_memo 
     try:        # Checking if num_item_checked is between 1-500 AND is not a string, no errors come as a result
         if 0<int(num_item_hired)<501:
             error_text["text"]=""+recipt_memo
             num_item_hired_title["fg"]="black"
         else:
-            error_text["text"]="Error! Number must be 1-500!"
+            error_text["text"]=f"Error! Number must be 1-500!\n{recipt_memo}"
             num_item_hired_title["fg"]="red"
     except:
-        error_text["text"]=f"Error! Please put a number between 1-500 no letters for 'number hired' {recipt_memo}"
+        error_text["text"]=f"Error! Please put a number between 1-500 no letters for 'number hired'\n {recipt_memo}"
         num_item_hired_title["fg"]="red"
 
     if error_text["text"]=="":
-        column_list=("customer_name","recipt_number","item_hired","number_hired") 
+        column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
+        global treeview
         treeview = ttk.Treeview(root,columns=column_list,height=11)
-        treeview.column("#0", width=0,)
+        treeview.column("#0", width=0)
+        treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
         treeview.heading("customer_name",text="Customer Name")
         treeview.heading("recipt_number",text="Recipt Number")
         treeview.heading("item_hired",text="Item Hired")
         treeview.heading("number_hired",text="Number Hired")
-        treeview.place(x=200,y=380)
+        treeview.place(x=150,y=380)
+        client_list.append((len(client_list),customer_name,recipt_number,item_hired,num_item_hired))
+        for i in client_list:
+            treeview.insert("",tk.END,values=i)
 
-    
+def delete_row(event):
+    full_selected_list = treeview.item(treeview.focus())
+    row_deleted = full_selected_list["values"][0]
+    print(row_deleted)
+    client_list.pop(row_deleted)
+
+    item_selected = treeview.selection()[0]
+    treeview.delete(item_selected)
+
+root.bind("<Return>",delete_row)
 
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=290)
+
 
 #Error Text
 error_text=Label(root,font=(("Arial"),14))
