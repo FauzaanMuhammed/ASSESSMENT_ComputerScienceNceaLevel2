@@ -68,9 +68,9 @@ def main_function():
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
     try:
-        test = float(customer_name)+1
-        customer_name_title["fg"]="red"
-        customer_memo="Error! Please put no numbers on 'customer name'"
+        test = float(customer_name)+1 # checks if customer_name can be converted to float with no errors.
+        customer_name_title["fg"]="red"#-> If so, this means customer_name must be a number/float, therefore an error has to be thrownout
+        customer_memo="Error! Please put no numbers on 'customer name'" #-> As they aren't allowed on customer names
         error_text["text"]=customer_memo
     except:
         customer_name_title["fg"]="black"
