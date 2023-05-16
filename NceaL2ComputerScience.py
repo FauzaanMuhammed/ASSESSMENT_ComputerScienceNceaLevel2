@@ -68,6 +68,15 @@ def main_function():
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
     try:
+        test = float(customer_name)+1
+        customer_name_title["fg"]="red"
+        customer_memo="Error! Please put no numbers on 'customer name'"
+        error_text["text"]=customer_memo
+    except:
+        customer_name_title["fg"]="black"
+        customer_memo=""
+
+    try:
         test=int(recipt_number)+1 #Try adding 1 to the recipt number.
         recipt_number_title["fg"]="black"
         recipt_memo="" # Recipt memo variable allows us to add messages to the end of error messages without creating a new function
@@ -83,7 +92,7 @@ def main_function():
             error_text["text"]=f"Error! Number must be 1-500!\n{recipt_memo}"
             num_item_hired_title["fg"]="red"
     except:
-        error_text["text"]=f"Error! Please put a number between 1-500 no letters for 'number hired'\n {recipt_memo}"
+        error_text["text"]=f"Error! Please put a number between 1-500 no letters for 'number hired'\n {recipt_memo}\n{customer_memo}"
         num_item_hired_title["fg"]="red"
 
     if error_text["text"]=="":
@@ -97,19 +106,44 @@ def main_function():
         treeview.heading("item_hired",text="Item Hired")
         treeview.heading("number_hired",text="Number Hired")
         treeview.place(x=150,y=380)
-        client_list.append((len(client_list),customer_name,recipt_number,item_hired,num_item_hired))
+        client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired])
         for i in client_list:
             treeview.insert("",tk.END,values=i)
+  
 
 def delete_row(event):
+
+
+    # Getting the information about the selected row, so that row can be deleted when enter is pressed 
     full_selected_list = treeview.item(treeview.focus())
+        
+    # Deletion of the selected row. 
     row_deleted = full_selected_list["values"][0]
-    print(row_deleted)
     client_list.pop(row_deleted)
-
-    item_selected = treeview.selection()[0]
+    
+    # Deletion of selected rows
+    item_selected = treeview.selection()[0] # Treeview returns the tuple of selected items.[0] makes sure others aren't deleted on accident.
     treeview.delete(item_selected)
+    # Changing the rows numbers to be updated after all changes are made to the treeview
+    for i in range(len(client_list)):
+        client_list[i][0]=i+1 # i starts at 0 and goes up by 1, this allows to correct row numbers that have been altered by deleting rows
+                              # 1 has been added, so the row actually starts at 1 instead of 0 
 
+    # Global variable treeview cannot be reassigned, so we must delete all the items in it, and add client_list onto it again
+    # This will allow us to update the list after rows have been deleted
+    for i in treeview.get_children():
+        treeview.delete(i)
+    treeview.column("#0", width=0)
+    treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
+    treeview.heading("customer_name",text="Customer Name")
+    treeview.heading("recipt_number",text="Recipt Number")
+    treeview.heading("item_hired",text="Item Hired")
+    treeview.heading("number_hired",text="Number Hired")
+    treeview.place(x=150,y=380)
+    for i in client_list:
+        treeview.insert("",tk.END,values=i)
+
+    
 root.bind("<Return>",delete_row)
 
 #Enter Data Button
