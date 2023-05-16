@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 import time 
 from PIL import Image,ImageTk
+from tkinter import messagebox
 
 global client_list;client_list=[]
 global customer_name 
@@ -67,35 +68,40 @@ def main_function():
     recipt_number = recipt_number_entry.get()
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
+    error_message=""
     try:
         test = float(customer_name)+1 # checks if customer_name can be converted to float with no errors.
         customer_name_title["fg"]="red"#-> If so, this means customer_name must be a number/float, therefore an error has to be thrownout
-        customer_memo="Error! Please put no numbers on 'customer name'" #-> As they aren't allowed on customer names
-        error_text["text"]=customer_memo
+        error_message="Customer name: Please put no numbers\n"
+
     except:
         customer_name_title["fg"]="black"
-        customer_memo=""
 
     try:
         test=int(recipt_number)+1 #Try adding 1 to the recipt number.
         recipt_number_title["fg"]="black"
-        recipt_memo="" # Recipt memo variable allows us to add messages to the end of error messages without creating a new function
-    except:            # If 1 can't be added to recipt number i.e it's a string, throw an error
+        
+    except:           
         recipt_number_title["fg"]="red" 
-        recipt_memo="'Error! Please put any number for 'recipt number'"
-        error_text["text"]=recipt_memo 
+        error_message+="Recipt number: Please put any number\n"
+
+    if item_hired=="":
+        error_message+="item hired: Please put don't leave this empty\n"
+        item_hired_title["fg"]="red"
+    else:
+        item_hired_title["fg"]="black"
+
     try:        # Checking if num_item_checked is between 1-500 AND is not a string, no errors come as a result
         if 0<int(num_item_hired)<501:
-            error_text["text"]=""+recipt_memo+customer_memo
             num_item_hired_title["fg"]="black"
         else:
-            error_text["text"]=f"Error! Number must be 1-500!\n{recipt_memo}{customer_memo}"
+            error_message+="Number hired: Number must be between between 1-500!"
             num_item_hired_title["fg"]="red"
     except:
-        error_text["text"]=f"Error! Please put a number between 1-500 no letters for 'number hired'\n {recipt_memo}\n{customer_memo}"
+        error_message+="Number hired: Please put a number"
         num_item_hired_title["fg"]="red"
 
-    if error_text["text"]=="":
+    if error_message=="":
         deletion_instruction_title=Label(root,text="Press 'Enter' to delete rows you have clicked.")
         deletion_instruction_title.place(x=450,y=355)
 
@@ -113,6 +119,8 @@ def main_function():
         client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired])
         for i in client_list:
             treeview.insert("",tk.END,values=i)
+    else:
+        messagebox.showerror("Error!",error_message)
   
 
 def delete_row(event):
@@ -154,11 +162,6 @@ root.bind("<Return>",delete_row)
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=290)
-
-
-#Error Text
-error_text=Label(root,font=(("Arial"),14))
-error_text.place(x=300,y=330)
 
 
 root.geometry("1200x800-40+0")
