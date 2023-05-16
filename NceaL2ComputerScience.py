@@ -103,7 +103,7 @@ def main_function():
 
     if error_message=="":
         deletion_instruction_title=Label(root,text="Press 'Enter' to delete rows you have clicked.")
-        deletion_instruction_title.place(x=450,y=355)
+        deletion_instruction_title.place(x=450,y=355) # This tells user instructions on how to the enter key to delete rows
 
 
         column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
@@ -125,7 +125,7 @@ def main_function():
 
 def delete_row(event):
 
-    if client_list: # Only runs function if client_list isn't empty, to prevent errors.
+    try: # Prevents errors using try and except.
 
         # Getting the information about the selected row, so that row can be deleted when enter is pressed 
         full_selected_list = treeview.item(treeview.focus())
@@ -155,9 +155,10 @@ def delete_row(event):
         treeview.place(x=150,y=380)
         for i in client_list:
             treeview.insert("",tk.END,values=i)
-
+    except:
+        pass
     
-root.bind("<Return>",delete_row)
+root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the delete row function.
 
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
