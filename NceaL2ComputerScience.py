@@ -156,7 +156,7 @@ def delete_row(event):
         for i in client_list:
             treeview.insert("",tk.END,values=i)
     except:
-        pass
+        pass # Cannot be empty, otherwise indenting errors will occur
     
 root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the delete row function.
 
