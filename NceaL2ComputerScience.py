@@ -125,17 +125,17 @@ def main_function():
 
 def delete_row(event):
 
-    try: # Prevents errors using try and except.
+    try: # Prevents errors that would happens if enter is pressed with no treeview
 
         # Getting the information about the selected row, so that row can be deleted when enter is pressed 
         full_selected_list = treeview.item(treeview.focus())
-            
+        
         # Deletion of the selected row. 
         row_deleted = full_selected_list["values"][0]
         client_list.pop(row_deleted-1) # Since the row value is 1 greater than it normaly is, we must -1 to normalize the pop function
         
         # Deletion of selected rows
-        item_selected = treeview.selection()[0] # Treeview returns the tuple of selected items.[0] makes sure others aren't deleted on accident.
+        item_selected = treeview.selection()[0] # Treeview returns the tuple of selected items.[0] is the part of the tuple that needs to be deleted
         treeview.delete(item_selected)
         # Changing the rows numbers to be updated after all changes are made to the treeview
         for i in range(len(client_list)):
@@ -164,6 +164,6 @@ root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=290)
 
-
+root.title("Julie's Party Hire")
 root.geometry("1200x800-40+0")
 root.mainloop()
