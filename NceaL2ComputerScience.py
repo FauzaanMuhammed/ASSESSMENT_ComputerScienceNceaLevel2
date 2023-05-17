@@ -15,10 +15,10 @@ global num_item_hired
 root = tk.Tk() #Creates an instance of tkinter
 
 def disable_recipt_entry():
-    if random_recipt_checked.get()==1:
-        recipt_number_entry["state"]=DISABLED
+    if random_recipt_checked.get()==1: 
+        recipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the entry
     else:
-        recipt_number_entry["state"]=NORMAL
+        recipt_number_entry["state"]=NORMAL   # otherwise, it is enabled
 
 #Image
 placeholder = Label(root,text="",height="15",width=5)
@@ -123,16 +123,16 @@ def main_function():
         column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
         global treeview # allows treeview to be accessed in other functions
         treeview = ttk.Treeview(root,columns=column_list,height=11)
-        treeview.column("#0", width=0)
+        treeview.column("#0", width=0) # Hides the 1st unused row
         treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
         treeview.heading("customer_name",text="Customer Name")
         treeview.heading("recipt_number",text="Recipt Number")
         treeview.heading("item_hired",text="Item Hired")
         treeview.heading("number_hired",text="Number Hired")
-        treeview.place(x=150,y=380)
-        client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired])
+        treeview.place(x=150,y=380) 
+        client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
-            treeview.insert("",tk.END,values=i)
+            treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
     else:
         messagebox.showerror("Error!",error_message)
   
@@ -160,9 +160,9 @@ def delete_row(event):
         # This will allow us to update the list after rows have been deleted
         for i in treeview.get_children():
             treeview.delete(i)
-        treeview.column("#0", width=0)
+        treeview.column("#0", width=0) 
         treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
-        treeview.heading("customer_name",text="Customer Name")
+        treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
         treeview.heading("recipt_number",text="Recipt Number")
         treeview.heading("item_hired",text="Item Hired")
         treeview.heading("number_hired",text="Number Hired")
