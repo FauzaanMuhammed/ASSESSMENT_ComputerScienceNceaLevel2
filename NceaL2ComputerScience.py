@@ -14,6 +14,11 @@ global num_item_hired
 
 root = tk.Tk() #Creates an instance of tkinter
 
+def disable_recipt_entry():
+    if random_recipt_checked.get()==1:
+        recipt_number_entry["state"]=DISABLED
+    else:
+        recipt_number_entry["state"]=NORMAL
 
 #Image
 placeholder = Label(root,text="",height="15",width=5)
@@ -49,7 +54,7 @@ recipt_number_entry.grid(column=2,row=2)
 
 #Random Recipt Number Checkbox
 random_recipt_checked  = tk.IntVar()
-random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked)
+random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=disable_recipt_entry)
 random_recipt_checkbox.grid(column=2,row=3)
 
 #Item hired title and entry
