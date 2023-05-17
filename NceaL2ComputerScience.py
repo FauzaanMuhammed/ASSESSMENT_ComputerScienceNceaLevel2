@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+from random import randint
 import time 
 from PIL import Image,ImageTk
 from tkinter import messagebox
@@ -11,9 +12,8 @@ global recipt_number
 global item_hired
 global num_item_hired
 
+root = tk.Tk() #Creates an instance of tkinter
 
-
-root = tk.Tk()
 
 #Image
 placeholder = Label(root,text="",height="15",width=5)
@@ -47,6 +47,11 @@ recipt_number_title.grid(column=2,row=1)
 recipt_number_entry = Entry(root,width="25")                # Therefore, it only needs to be used for every odd element
 recipt_number_entry.grid(column=2,row=2)
 
+#Random Recipt Number Checkbox
+random_recipt_checked  = tk.IntVar()
+random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked)
+random_recipt_checkbox.grid(column=2,row=3)
+
 #Item hired title and entry
 item_hired_title = Label(root,text="Item Hired",font=(("Arial"),14),width="33") 
 item_hired_title.grid(column=3,row=1)           
@@ -65,17 +70,21 @@ num_item_hired_entry.grid(column=4,row=2)
 # Main function for enter data button
 def main_function():
     customer_name = customer_name_entry.get()
-    recipt_number = recipt_number_entry.get()
+    if random_recipt_checked.get()==1: # checks if random_recipt check list has been ticked. if so, generate a random number from 100,000 to 999,999 for it. 
+        recipt_number=randint(100000,999999)
+    else:
+        recipt_number = recipt_number_entry.get() # Otherwise, get the manual entry
+
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
-    error_message=""
+    error_message="" 
     try:
         test = float(customer_name)+1 # checks if customer_name can be converted to float with no errors.
         customer_name_title["fg"]="red"#-> If so, this means customer_name must be a number/float, therefore an error has to be thrownout
-        error_message="Customer name: Please put no numbers\n"
+        error_message="Customer name: Please put no numbers\n" # Adds a new errors message, and a line break for neatness
 
     except:
-        customer_name_title["fg"]="black"
+        customer_name_title["fg"]="black" # Sets the text color back to black if no error.
 
     try:
         test=int(recipt_number)+1 #Try adding 1 to the recipt number.
@@ -83,7 +92,8 @@ def main_function():
         
     except:           
         recipt_number_title["fg"]="red" 
-        error_message+="Recipt number: Please put any number\n"
+        if not random_recipt_checked.get()==1:
+            error_message+="Recipt number: Please put any number\n"
 
     if item_hired=="":
         error_message+="item hired: Please put don't leave this empty\n"
@@ -99,15 +109,14 @@ def main_function():
             num_item_hired_title["fg"]="red"
     except:
         error_message+="Number hired: Please put a number"
-        num_item_hired_title["fg"]="red"
+        num_item_hired_title["fg"]="red" # If num_item_hired cannot be turned into a number, it must be a string.
 
-    if error_message=="":
+    if error_message=="": # If no errors are present, continue the program.
+        
         deletion_instruction_title=Label(root,text="Press 'Enter' to delete rows you have clicked.")
         deletion_instruction_title.place(x=450,y=355) # This tells user instructions on how to the enter key to delete rows
-
-
         column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
-        global treeview
+        global treeview # allows treeview to be accessed in other functions
         treeview = ttk.Treeview(root,columns=column_list,height=11)
         treeview.column("#0", width=0)
         treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
@@ -157,13 +166,16 @@ def delete_row(event):
             treeview.insert("",tk.END,values=i)
     except:
         pass # Cannot be empty, otherwise indenting errors will occur
-    
+
+
+
+
 root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the delete row function.
 
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
-enter_data_button.place(x=500,y=290)
+enter_data_button.place(x=500,y=310)
 
 root.title("Julie's Party Hire")
 root.geometry("1200x800-40+0")
-root.mainloop()
+root.mainloop() # Loops the tkinter so it is always showing
