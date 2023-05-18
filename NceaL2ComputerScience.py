@@ -53,7 +53,7 @@ recipt_number_entry.grid(column=2,row=2)
 
 #Random Recipt Number Checkbox
 random_recipt_checked  = tk.IntVar()
-random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=disable_recipt_entry,font=(("Arial bold"),12)) # Makes the checkbox text more readable.
+random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=disable_recipt_entry,font=(("Arial bold"),12)) # changes the font from default settings to make the text easier to see.
 random_recipt_checkbox.grid(column=2,row=3)
 
 #Item hired title and entry
