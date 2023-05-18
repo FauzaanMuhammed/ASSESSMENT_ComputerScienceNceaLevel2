@@ -2,11 +2,10 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from random import randint
-import time 
 from PIL import Image,ImageTk
 from tkinter import messagebox
 
-global client_list;client_list=[]
+global client_list;client_list=[] # Global variables are able to be used outside of the function it was assigned, which is very useful
 global customer_name 
 global recipt_number
 global item_hired
@@ -16,7 +15,7 @@ root = tk.Tk() #Creates an instance of tkinter
 
 def disable_recipt_entry():
     if random_recipt_checked.get()==1: 
-        recipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the entry
+        recipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the recipt_number entry
     else:
         recipt_number_entry["state"]=NORMAL   # otherwise, it is enabled
 
@@ -97,7 +96,7 @@ def main_function():
         
     except:           
         recipt_number_title["fg"]="red" 
-        if not random_recipt_checked.get()==1:
+        if not random_recipt_checked.get()==1: # If the recipt checkbox is not chcked, and the checbox is empty, give the user an error, as a value must be given for manual recipt
             error_message+="Recipt number: Please put any number\n"
 
     if item_hired=="":
@@ -110,7 +109,7 @@ def main_function():
         if 0<int(num_item_hired)<501:
             num_item_hired_title["fg"]="black"
         else:
-            error_message+="Number hired: Number must be between between 1-500!"
+            error_message+="Number hired: Number must be between between 1-500!" # No \n is used, as it is not needed for the last error message, as no other messages come after it
             num_item_hired_title["fg"]="red"
     except:
         error_message+="Number hired: Please put a number"
