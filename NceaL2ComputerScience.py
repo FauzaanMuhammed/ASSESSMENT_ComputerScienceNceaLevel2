@@ -16,6 +16,8 @@ root = tk.Tk() #Creates an instance of tkinter
 def disable_recipt_entry():
     if random_recipt_checked.get()==1: 
         recipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the recipt_number entry
+        if recipt_number_entry.get()=="": # If the recipt_number entry is empty
+            recipt_number_title["fg"]="black" # -> Display the recipt number title as black, to prevent confusion. 
     else:
         recipt_number_entry["state"]=NORMAL   # otherwise, it is enabled
 
