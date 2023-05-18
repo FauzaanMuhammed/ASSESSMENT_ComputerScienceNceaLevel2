@@ -53,7 +53,7 @@ recipt_number_entry.grid(column=2,row=2)
 
 #Random Recipt Number Checkbox
 random_recipt_checked  = tk.IntVar()
-random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=disable_recipt_entry)
+random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=disable_recipt_entry,font=(("Arial bold"),12)) # Makes the checkbox text more readable.
 random_recipt_checkbox.grid(column=2,row=3)
 
 #Item hired title and entry
@@ -95,7 +95,7 @@ def main_function():
         recipt_number_title["fg"]="black"
         
     except:           
-        recipt_number_title["fg"]="red" 
+        recipt_number_title["fg"]="red"
         if not random_recipt_checked.get()==1: # If the recipt checkbox is not chcked, and the checbox is empty, give the user an error, as a value must be given for manual recipt
             error_message+="Recipt number: Please put any number\n"
 
