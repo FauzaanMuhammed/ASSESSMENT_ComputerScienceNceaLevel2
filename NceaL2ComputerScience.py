@@ -110,7 +110,7 @@ def main_function():
     except:           
         recipt_number_title["fg"]="red"
         if not random_recipt_checked.get()==1: # If the recipt checkbox is not chcked, and the checbox is empty, give the user an error, as a value must be given for manual recipt
-            error_message+="Recipt number: Please put any number\n"
+            error_message+="Recipt number: Please put any number. Make sure to remove any letters\n"
 
     if item_hired=="":
         error_message+="item hired: Please put don't leave this empty\n"
@@ -122,10 +122,10 @@ def main_function():
         if 0<int(num_item_hired)<501:
             num_item_hired_title["fg"]="black"
         else:
-            error_message+="Number hired: Number must be between between 1-500!" # No \n is used, as it is not needed for the last error message, as no other messages come after it
+            error_message+="Number hired: Number must be between between 1-500! Make sure to remove any letters" # No \n is used, as it is not needed for the last error message, as no other messages come after it
             num_item_hired_title["fg"]="red"
     except:
-        error_message+="Number hired: Please put a number"
+        error_message+="Number hired: Please put a number. Make sure to remove letters"
         num_item_hired_title["fg"]="red" # If num_item_hired cannot be turned into a number, it must be a string.
 
     if error_message=="": # If no errors are present, continue the program.
