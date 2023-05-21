@@ -34,11 +34,17 @@ title_label = Label(root,text="Julie’s Party Hire",font=(("Elephant"),20)) # T
 title_label.place(x=475,y=0)
 
 #Exit Button
-exit_button=Button(root,text="QUIT",bg="#B50404",fg="white",command=quit) 
+exit_button = Button(root,text="QUIT",bg="#B50404",fg="white",command=quit) 
 exit_button.place(x=1160,y=0)
 def quit():  # The function for quitting
     root.destroy()
 
+# Help Button
+help_button = Button(root,text="❓Help",bg="#3498DB")
+help_button.place(x=1145,y=30)
+def help_popup():
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data\nPress enter to delete rows when you have clicked them.\n You can also scroll through to check")
+help_button.configure(command=help_popup)
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
 customer_name_title.grid(column=1,row=1,)                                   # -> So they don't look messy
