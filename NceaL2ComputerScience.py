@@ -90,7 +90,12 @@ def main_function():
         error_message="Customer name: Please put no numbers\n" # Adds a new errors message, and a line break for neatness
 
     except:
-        customer_name_title["fg"]="black" # Sets the text color back to black if no error.
+        if customer_name=="":
+            customer_name_title["fg"]="red"
+            error_message="Customer Name: Please don't leave empty, you can put anything but numbers\n"
+        else:
+            customer_name_title["fg"]="black" # Sets the text color back to black if no error.
+        
 
     try:
         test=int(recipt_number)+1 #Try adding 1 to the recipt number.
@@ -131,6 +136,12 @@ def main_function():
         treeview.heading("item_hired",text="Item Hired")
         treeview.heading("number_hired",text="Number Hired")
         treeview.place(x=150,y=380) 
+        # Treeview scrollbar
+        treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
+        treeview_scrollbar.place(x=975, y=430, height=180)
+        treeview.configure(yscrollcommand=treeview_scrollbar.set)
+
+
         client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
@@ -181,6 +192,7 @@ root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=310)
+
 
 root.title("Julie's Party Hire")
 root.geometry("1200x800-40+0")
