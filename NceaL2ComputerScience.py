@@ -6,10 +6,7 @@ from PIL import Image,ImageTk
 from tkinter import messagebox
 
 global client_list;client_list=[] # Global variables are able to be used outside of the function it was assigned, which is very useful
-global customer_name 
-global recipt_number
-global item_hired
-global num_item_hired
+
 
 root = tk.Tk() #Creates an instance of tkinter
 
@@ -43,7 +40,7 @@ def quit():  # The function for quitting
 help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
-    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data\nPress enter to delete rows when you have clicked them.\n You can also scroll through to check")
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid\nPress enter to delete rows when you have clicked them.\n You can also scroll through to check")
 help_button.configure(command=help_popup)
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
@@ -187,14 +184,33 @@ def delete_row(event):
         treeview.place(x=150,y=380)
         for i in client_list:
             treeview.insert("",tk.END,values=i)
-    except:
+
+    except: # If errors are present, run this instead
         pass # Cannot be empty, otherwise indenting errors will occur
 
 
 
+def text_color_update(event): # This function updates the entry titles from red to black IF they're valid
+    # Customer name
+    if not customer_name_entry.get()=="":
+        try:
+            test = int(customer_name_entry.get())+1
+        except:
+            customer_name_title["fg"]="black"
+    # Item_hired
+    if not item_hired_entry.get()=="":
+        item_hired_title["fg"]="black"
+    # Num_item_hired
+    try:
+        test = int(num_item_hired_entry.get())+1
+        num_item_hired_title["fg"]="black"
+    except:
+        pass
 
+
+    
 root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the delete row function.
-
+root.bind("<Motion>",text_color_update)
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=310)
