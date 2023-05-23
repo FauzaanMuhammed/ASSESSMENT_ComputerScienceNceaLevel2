@@ -40,7 +40,7 @@ def quit():  # The function for quitting
 help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
-    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid\nPress enter to delete rows when you have clicked them.\n You can also scroll through to check")
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\nPress enter to delete rows when you have clicked them.\n The table also has a scrollbar.")
 help_button.configure(command=help_popup)
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
@@ -87,13 +87,13 @@ def main_function():
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
     error_message="" 
-    try:
-        test = float(customer_name)+1 # checks if customer_name can be converted to float with no errors.
-        customer_name_title["fg"]="red"#-> If so, this means customer_name must be a number/float, therefore an error has to be thrownout
+    try: # The reason try is used instead of type() is because all entry.get values are strings. Because of this, I used try to figure out if they can be converted into a float/int with/without errors depending on the scenario.
+        test = float(customer_name)+1 
+        customer_name_title["fg"]="red"#-> Since the entry can be converted without any error message, this means customer_name must be a number/float, therefore an error has to be thrownout
         error_message="Customer name: Please put no numbers\n" # Adds a new errors message, and a line break for neatness
 
     except:
-        if customer_name=="":
+        if customer_name=="": # customer name cannot be empty, however. So an error must be thrown out.
             customer_name_title["fg"]="red"
             error_message="Customer Name: Please don't leave empty, you can put anything but numbers\n"
         else:
@@ -127,8 +127,8 @@ def main_function():
 
     if error_message=="": # If no errors are present, continue the program.
         
-        deletion_instruction_title=Label(root,text="Press 'Enter' to delete rows you have clicked.")
-        deletion_instruction_title.place(x=450,y=355) # This tells user instructions on how to the enter key to delete rows
+        deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
+        deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
         column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
         global treeview # allows treeview to be accessed in other functions
         treeview = ttk.Treeview(root,columns=column_list,height=11)
@@ -137,8 +137,8 @@ def main_function():
         treeview.heading("customer_name",text="Customer Name")
         treeview.heading("recipt_number",text="Recipt Number")
         treeview.heading("item_hired",text="Item Hired")
-        treeview.heading("number_hired",text="Number Hired")
-        treeview.place(x=150,y=380) 
+        treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150) # width is set to 150, so new entries cannot move it.
+        treeview.place(x=200,y=380) 
         # Treeview scrollbar
         treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
         treeview_scrollbar.place(x=975, y=430, height=180)
@@ -180,8 +180,8 @@ def delete_row(event):
         treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
         treeview.heading("recipt_number",text="Recipt Number")
         treeview.heading("item_hired",text="Item Hired")
-        treeview.heading("number_hired",text="Number Hired")
-        treeview.place(x=150,y=380)
+        treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150)
+        treeview.place(x=200,y=380)
         for i in client_list:
             treeview.insert("",tk.END,values=i)
 
@@ -209,8 +209,8 @@ def text_color_update(event): # This function updates the entry titles from red 
 
 
     
-root.bind("<Return>",delete_row) # Bind the return key i.e the enter key, to the delete row function.
-root.bind("<Motion>",text_color_update)
+root.bind("<Return>",delete_row) #The delete row function fires when enter(Return) is pressed
+root.bind("<Motion>",text_color_update) # text_color_update runs whenever there is motion detected is the mouse
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=310)
@@ -218,4 +218,4 @@ enter_data_button.place(x=500,y=310)
 
 root.title("Julie's Party Hire")
 root.geometry("1200x800-40+0")
-root.mainloop() # Loops the tkinter so it is always showing
+root.mainloop() # Loops the tkinter so it is always running
