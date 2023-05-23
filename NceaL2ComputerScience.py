@@ -40,7 +40,7 @@ def quit():  # The function for quitting
 help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
-    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\nPress enter to delete rows when you have clicked them.\n The table also has a scrollbar.")
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\nPress enter to delete rows when you have clicked them.\nThe table also has a scrollbar.\nData is automatically saved.")
 help_button.configure(command=help_popup)
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
@@ -126,7 +126,6 @@ def main_function():
         num_item_hired_title["fg"]="red" # If num_item_hired cannot be turned into a number, it must be a string.
 
     if error_message=="": # If no errors are present, continue the program.
-        
         deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
         deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
         column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
@@ -148,6 +147,16 @@ def main_function():
         client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
+        file = open("save_data.txt","w")
+        file.write("") # Clears save_data
+        file.close()
+
+        file=open("save_data.txt","a")
+        for i in client_list:
+            for x in range(5): # Uses a nested for loop through the 2 dimensional list to get each values of the list's list 5 items.
+                file.write(f"{i[x]}\n") 
+        file.close()
+
     else:
         messagebox.showerror("Error!",error_message)
   
@@ -155,7 +164,7 @@ def main_function():
 def delete_row(event):
 
     try: # Prevents errors that would happens if enter is pressed with no treeview
-
+        root.forget(treeview)
         # Getting the information about the selected row, so that row can be deleted when enter is pressed 
         full_selected_list = treeview.item(treeview.focus())
         
@@ -168,7 +177,7 @@ def delete_row(event):
         treeview.delete(item_selected)
         # Changing the rows numbers to be updated after all changes are made to the treeview
         for i in range(len(client_list)):
-            client_list[i][0]=i+1 # i starts at 0 and goes up by 1, this allows to correct row numbers that have been altered by deleting rows
+            client_list[i][0]=i+1 # Corrects row numbers when row is deleted.
                                 # 1 has been added, so the row actually starts at 1 instead of 0 
 
         # Global variable treeview cannot be reassigned, so we must delete all the items in it, and add client_list onto it again
@@ -185,6 +194,16 @@ def delete_row(event):
         for i in client_list:
             treeview.insert("",tk.END,values=i)
 
+        file = open("save_data.txt","w")
+        file.write("") # Clears save_data
+        file.close()
+
+        file=open("save_data.txt","a")
+        for i in client_list:
+            for x in range(5): # Uses a nested for loop through the 2 dimensional list to get each values of the list's list 5 items.
+                file.write(f"{i[x]}\n")  
+        file.close()
+
     except: # If errors are present, run this instead
         pass # Cannot be empty, otherwise indenting errors will occur
 
@@ -194,7 +213,7 @@ def text_color_update(event): # This function updates the entry titles from red 
     # Customer name
     if not customer_name_entry.get()=="":
         try:
-            test = int(customer_name_entry.get())+1
+            test = int(customer_name_entry.get())
         except:
             customer_name_title["fg"]="black"
     # Item_hired
@@ -202,8 +221,9 @@ def text_color_update(event): # This function updates the entry titles from red 
         item_hired_title["fg"]="black"
     # Num_item_hired
     try:
-        test = int(num_item_hired_entry.get())+1
-        num_item_hired_title["fg"]="black"
+        test = int(num_item_hired_entry.get())
+        if 0<test<501:
+            num_item_hired_title["fg"]="black"
     except:
         pass
 
@@ -214,7 +234,6 @@ root.bind("<Motion>",text_color_update) # text_color_update runs whenever there 
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=310)
-
 
 root.title("Julie's Party Hire")
 root.geometry("1200x800-40+0")
