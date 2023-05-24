@@ -26,17 +26,18 @@ deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows
 deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
 column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
 treeview = ttk.Treeview(root,columns=column_list,height=11)
-treeview.column("#0", width=0) 
+treeview.column("#0", width=0) # Hides the unused row
 treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
-treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
+treeview.heading("customer_name",text="Customer Name")# The heading for the treeview.
 treeview.heading("recipt_number",text="Recipt Number")
 treeview.heading("item_hired",text="Item Hired")
-treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150)
+treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150) # Fixed widths stop other elements from pushing columns
 treeview.place(x=200,y=380)
+
 for i in client_list:
     treeview.insert("",tk.END,values=i)
 treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
-treeview_scrollbar.place(x=979, y=430, height=180)
+treeview_scrollbar.place(x=979, y=420, height=180)
 treeview.configure(yscrollcommand=treeview_scrollbar.set)
 
 
@@ -156,21 +157,8 @@ def main_function():
         num_item_hired_title["fg"]="red" # If num_item_hired cannot be turned into a number, it must be a string.
 
     if error_message=="": # If no errors are present, continue the program.
-        column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
-        global treeview # allows treeview to be accessed in other functions
-        treeview = ttk.Treeview(root,columns=column_list,height=11)
-        treeview.column("#0", width=0) # Hides the 1st unused row
-        treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
-        treeview.heading("customer_name",text="Customer Name")
-        treeview.heading("recipt_number",text="Recipt Number")
-        treeview.heading("item_hired",text="Item Hired")
-        treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150) # width is set to 150, so new entries cannot move it.
-        treeview.place(x=200,y=380) 
-        # Treeview scrollbar
-        treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
-        treeview_scrollbar.place(x=979, y=430, height=180)
-        treeview.configure(yscrollcommand=treeview_scrollbar.set)
-
+        for i in treeview.get_children():
+            treeview.delete(i)     
 
         client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
@@ -188,7 +176,6 @@ def main_function():
     else:
         messagebox.showerror("Error!",error_message)
   
-
 def delete_row(event):
 
     try: # Prevents errors that would happens if enter is pressed with no treeview
@@ -208,17 +195,9 @@ def delete_row(event):
             client_list[i][0]=i+1 # Corrects row numbers when row is deleted.
                                 # 1 has been added, so the row actually starts at 1 instead of 0 
 
-        # Global variable treeview cannot be reassigned, so we must delete all the items in it, and add client_list onto it again
         # This will allow us to update the list after rows have been deleted
         for i in treeview.get_children():
             treeview.delete(i)
-        treeview.column("#0", width=0) 
-        treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
-        treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
-        treeview.heading("recipt_number",text="Recipt Number")
-        treeview.heading("item_hired",text="Item Hired")
-        treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150)
-        treeview.place(x=200,y=380)
         for i in client_list:
             treeview.insert("",tk.END,values=i)
 
@@ -254,9 +233,7 @@ def text_color_update(event): # This function updates the entry titles from red 
             num_item_hired_title["fg"]="black"
     except:
         pass
-
-
-    
+   
 root.bind("<Return>",delete_row) #The delete row function fires when enter(Return) is pressed
 root.bind("<Motion>",text_color_update) # text_color_update runs whenever there is motion detected is the mouse
 #Enter Data Button
