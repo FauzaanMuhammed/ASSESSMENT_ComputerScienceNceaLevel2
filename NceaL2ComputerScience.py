@@ -7,23 +7,23 @@ from tkinter import messagebox
 
 root = tk.Tk() #Creates an instance of tkinter
 
-global client_list;client_list=[] # Global variables are able to be used outside of the function it was assigned, which is very useful
+global client_list # Global variables are able to be used outside of the function it was assigned, which is very useful
 
-save_file = open("save_data_party_hire.txt","r")
+save_file = open("save_data_party_hire.txt","r")# Open save file for reading.
 saved_list = save_file.readlines()  # Read all the lines of the save_data_party_hire.txt file, and put it into a list
 file_length=len(saved_list)
 save_file.close()
 
-new_saved_list=[]
+new_saved_list=[] # Contains info about the new improved list.
 for i in saved_list:
     new_saved_list.append(i[0:-1]) #This the start to 2nd to last item of the list, and put it onto a new list. This is done, as the normal list includes line breaks, which we don't want
 
 client_list=[]
-for i in range(0,file_length,5):
+for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a list. The reason multidimensional lists are used are because they add an extra layer of convienence.
     client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
 
 
-if not client_list==[]:
+if not client_list==[]: # If the list from the data save text file isn't empty, paste those values onto aa treeview.
     deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
     deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
     column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
