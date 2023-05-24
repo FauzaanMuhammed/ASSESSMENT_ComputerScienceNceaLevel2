@@ -22,24 +22,22 @@ client_list=[]
 for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a list. The reason multidimensional lists are used are because they add an extra layer of convienence.
     client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
 
-
-if not client_list==[]: # If the list from the data save text file isn't empty, paste those values onto aa treeview.
-    deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
-    deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
-    column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
-    treeview = ttk.Treeview(root,columns=column_list,height=11)
-    treeview.column("#0", width=0) 
-    treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
-    treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
-    treeview.heading("recipt_number",text="Recipt Number")
-    treeview.heading("item_hired",text="Item Hired")
-    treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150)
-    treeview.place(x=200,y=380)
-    for i in client_list:
-        treeview.insert("",tk.END,values=i)
-    treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
-    treeview_scrollbar.place(x=979, y=430, height=180)
-    treeview.configure(yscrollcommand=treeview_scrollbar.set)
+deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
+deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
+column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
+treeview = ttk.Treeview(root,columns=column_list,height=11)
+treeview.column("#0", width=0) 
+treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
+treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
+treeview.heading("recipt_number",text="Recipt Number")
+treeview.heading("item_hired",text="Item Hired")
+treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150)
+treeview.place(x=200,y=380)
+for i in client_list:
+    treeview.insert("",tk.END,values=i)
+treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
+treeview_scrollbar.place(x=979, y=430, height=180)
+treeview.configure(yscrollcommand=treeview_scrollbar.set)
 
 
 def disable_recipt_entry():
@@ -122,12 +120,12 @@ def main_function():
     try: # The reason try is used instead of type() is because all entry.get values are strings. Because of this, I used try to figure out if they can be converted into a float/int with/without errors depending on the scenario.
         test = float(customer_name)+1 
         customer_name_title["fg"]="red"#-> Since the entry can be converted without any error message, this means customer_name must be a number/float, therefore an error has to be thrownout
-        error_message="Customer name: Please put no numbers\n" # Adds a new errors message, and a line break for neatness
+        error_message="Customer name: Please put no numbers\n\n" # Adds a new errors message, and a double line break for neatness
 
     except:
         if customer_name=="": # customer name cannot be empty, however. So an error must be thrown out.
             customer_name_title["fg"]="red"
-            error_message="Customer Name: Please don't leave empty, you can put anything but numbers\n"
+            error_message="Customer Name: Please don't leave empty, you can put anything but numbers\n\n"
         else:
             customer_name_title["fg"]="black" # Sets the text color back to black if no error.
         
@@ -139,10 +137,10 @@ def main_function():
     except:           
         recipt_number_title["fg"]="red"
         if not random_recipt_checked.get()==1: # If the recipt checkbox is not chcked, and the checbox is empty, give the user an error, as a value must be given for manual recipt
-            error_message+="Recipt number: Please put any number. Make sure to remove any letters\n"
+            error_message+="Recipt number: Please put any number. Make sure to remove any letters, or tick the tickbox for generating a random recipt.\n\n"
 
     if item_hired=="":
-        error_message+="item hired: Please put don't leave this empty\n"
+        error_message+="item hired: Please put don't leave this empty\n\n"
         item_hired_title["fg"]="red"
     else:
         item_hired_title["fg"]="black"
@@ -158,8 +156,6 @@ def main_function():
         num_item_hired_title["fg"]="red" # If num_item_hired cannot be turned into a number, it must be a string.
 
     if error_message=="": # If no errors are present, continue the program.
-        deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
-        deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
         column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
         global treeview # allows treeview to be accessed in other functions
         treeview = ttk.Treeview(root,columns=column_list,height=11)
