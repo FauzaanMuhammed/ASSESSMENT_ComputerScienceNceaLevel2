@@ -5,10 +5,42 @@ from random import randint
 from PIL import Image,ImageTk
 from tkinter import messagebox
 
+root = tk.Tk() #Creates an instance of tkinter
+
 global client_list;client_list=[] # Global variables are able to be used outside of the function it was assigned, which is very useful
 
+save_file = open("save_data_party_hire.txt","r")
+saved_list = save_file.readlines()  # Read all the lines of the save_data_party_hire.txt file, and put it into a list
+file_length=len(saved_list)
+save_file.close()
 
-root = tk.Tk() #Creates an instance of tkinter
+new_saved_list=[]
+for i in saved_list:
+    new_saved_list.append(i[0:-1]) #This the start to 2nd to last item of the list, and put it onto a new list. This is done, as the normal list includes line breaks, which we don't want
+
+client_list=[]
+for i in range(0,file_length,5):
+    client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
+
+
+if not client_list==[]:
+    deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
+    deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
+    column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
+    treeview = ttk.Treeview(root,columns=column_list,height=11)
+    treeview.column("#0", width=0) 
+    treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
+    treeview.heading("customer_name",text="Customer Name")# Re adds the heaaadings from main_function
+    treeview.heading("recipt_number",text="Recipt Number")
+    treeview.heading("item_hired",text="Item Hired")
+    treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150)
+    treeview.place(x=200,y=380)
+    for i in client_list:
+        treeview.insert("",tk.END,values=i)
+    treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
+    treeview_scrollbar.place(x=979, y=430, height=180)
+    treeview.configure(yscrollcommand=treeview_scrollbar.set)
+
 
 def disable_recipt_entry():
     if random_recipt_checked.get()==1: 
@@ -140,18 +172,18 @@ def main_function():
         treeview.place(x=200,y=380) 
         # Treeview scrollbar
         treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
-        treeview_scrollbar.place(x=975, y=430, height=180)
+        treeview_scrollbar.place(x=979, y=430, height=180)
         treeview.configure(yscrollcommand=treeview_scrollbar.set)
 
 
         client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
-        file = open("save_data.txt","w")
-        file.write("") # Clears save_data
+        file = open("save_data_party_hire.txt","w")
+        file.write("") # Clears save_data_party_hire
         file.close()
 
-        file=open("save_data.txt","a")
+        file=open("save_data_party_hire.txt","a")
         for i in client_list:
             for x in range(5): # Uses a nested for loop through the 2 dimensional list to get each values of the list's list 5 items.
                 file.write(f"{i[x]}\n") 
@@ -194,11 +226,11 @@ def delete_row(event):
         for i in client_list:
             treeview.insert("",tk.END,values=i)
 
-        file = open("save_data.txt","w")
-        file.write("") # Clears save_data
+        file = open("save_data_party_hire.txt","w")
+        file.write("") # Clears save_data_party_hire
         file.close()
 
-        file=open("save_data.txt","a")
+        file=open("save_data_party_hire.txt","a")
         for i in client_list:
             for x in range(5): # Uses a nested for loop through the 2 dimensional list to get each values of the list's list 5 items.
                 file.write(f"{i[x]}\n")  
