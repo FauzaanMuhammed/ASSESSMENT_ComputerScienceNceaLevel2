@@ -22,8 +22,8 @@ client_list=[]
 for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a list. The reason multidimensional lists are used are because they add an extra layer of convienence.
     client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
 
-deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked.")
-deletion_instruction_title.place(x=440,y=355) # This tells user instructions on how to the enter key to delete rows
+deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),10))
+deletion_instruction_title.place(x=330,y=355) # This tells user instructions on how to the enter key to delete rows
 column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
 treeview = ttk.Treeview(root,columns=column_list,height=11)
 treeview.column("#0", width=0) # Hides the unused row
@@ -34,8 +34,9 @@ treeview.heading("item_hired",text="Item Hired")
 treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150) # Fixed widths stop other elements from pushing columns
 treeview.place(x=200,y=380)
 
-for i in client_list:
+for i in client_list: # This for loop will insert the client information on each row there is on the list.
     treeview.insert("",tk.END,values=i)
+    
 treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
 treeview_scrollbar.place(x=979, y=420, height=180)
 treeview.configure(yscrollcommand=treeview_scrollbar.set)
@@ -71,7 +72,7 @@ def quit():  # The function for quitting
 help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
-    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\nPress enter to delete rows when you have clicked them.\nThe table also has a scrollbar.\nData is automatically saved.")
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\n\nPress enter to delete rows when you have clicked them. A clicked row will be blue. Once the row is blue then pressing enter will delete that row.\n\nThe table also has a scrollbar to navigate through the table.\n\nData is automatically saved.")
 help_button.configure(command=help_popup)
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
