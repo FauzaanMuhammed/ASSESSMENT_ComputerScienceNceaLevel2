@@ -11,15 +11,15 @@ global client_list # Global variables are able to be used outside of the functio
 
 save_file = open("save_data_party_hire.txt","r")# Open save file for reading.
 saved_list = save_file.readlines()  # Read all the lines of the save_data_party_hire.txt file, and put it into a list
-file_length=len(saved_list)
-save_file.close()
+file_length=len(saved_list) # Gets file length, so we know how many times we need to loop through it, as well where the extra line is located.
+save_file.close() # Closes the save_file
 
 new_saved_list=[] # Contains info about the new improved list.
 for i in saved_list:
-    new_saved_list.append(i[0:-1]) #This the start to 2nd to last item of the list, and put it onto a new list. This is done, as the normal list includes line breaks, which we don't want
+    new_saved_list.append(i[0:-1]) #This the start to 2nd to last item of the list, and put it onto a new list. This is done, as the normal list includes '\n'(line breaks) at the end, which we don't want
 
 client_list=[]
-for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a list. The reason multidimensional lists are used are because they add an extra layer of convienence.
+for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a bigger list. The reason multidimensional lists are used are because they allow information to be place in columns and rows better. Each list is a row, and the individul client information ie. Customer Name, are columns. 
     client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
 
 deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),10))
@@ -42,13 +42,20 @@ treeview_scrollbar.place(x=979, y=420, height=180)
 treeview.configure(yscrollcommand=treeview_scrollbar.set)
 
 
-def disable_recipt_entry():
-    if random_recipt_checked.get()==1: 
+def random_recipt_checkbox_action():
+
+    if random_recipt_checked.get()==1: # If checkbox is on
         recipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the recipt_number entry
+
+        random_num_digit_entry.place(x=570,y=282)
+        random_recipt_checkbox["text"]="random value(digits)"# Tells users that the entry placed is for the digits
+
         if recipt_number_entry.get()=="": # If the recipt_number entry is empty
             recipt_number_title["fg"]="black" # -> Display the recipt number title as black, to prevent confusion. 
     else:
         recipt_number_entry["state"]=NORMAL   # otherwise, it is enabled
+        random_num_digit_entry.place_forget()
+        random_recipt_checkbox["text"]="random value"
 
 #Image
 placeholder = Label(root,text="",height="15",width=5)
@@ -65,7 +72,7 @@ title_label.place(x=475,y=0)
 #Exit Button
 exit_button = Button(root,text="QUIT",bg="#B50404",fg="white",command=quit) 
 exit_button.place(x=1160,y=0)
-def quit():  # The function for quitting
+def quit():  # The function for quitting. Works by destroying the tkinter GUI
     root.destroy()
 
 # Help Button
@@ -73,9 +80,9 @@ help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
     messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\n\nPress enter to delete rows when you have clicked them. A clicked row will be blue. Once the row is blue then pressing enter will delete that row.\n\nThe table also has a scrollbar to navigate through the table.\n\nData is automatically saved.")
-help_button.configure(command=help_popup)
+help_button.configure(command=help_popup) # Makes the help_button put the messagebox out when clicked.
 #Customer name title and entry
-customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="33") # width=33 Seperates the entries
+customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="31") # width=31 Seperates the entries
 customer_name_title.grid(column=1,row=1,)                                   # -> So they don't look messy
 
 customer_name_entry = Entry(root,width="25") 
@@ -90,11 +97,16 @@ recipt_number_entry.grid(column=2,row=2)
 
 #Random Recipt Number Checkbox
 random_recipt_checked  = tk.IntVar()
-random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=disable_recipt_entry,font=(("Arial bold"),12)) # changes the font from default settings to make the text easier to see.
+random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=random_recipt_checkbox_action,font=(("Arial bold"),12)) # changes the font from default settings to make the text easier to see.
 random_recipt_checkbox.grid(column=2,row=3)
 
+# Random recipt number digit entry
+random_num_digit_entry = Entry(root,width="3")
+random_num_digit_entry.place(x=570,y=282)
+random_num_digit_entry.place_forget() # By default, this is disabled, as manual entry is turned on by default.
+
 #Item hired title and entry
-item_hired_title = Label(root,text="Item Hired",font=(("Arial"),14),width="33") 
+item_hired_title = Label(root,text="Item Hired",font=(("Arial"),14),width="33") # 2 more width fills up more area to balance out the entry and make the entries all symmetrical
 item_hired_title.grid(column=3,row=1)           
                                             
 item_hired_entry = Entry(root,width="25")
@@ -110,24 +122,30 @@ num_item_hired_entry.grid(column=4,row=2)
 
 # Main function for enter data button
 def main_function():
+    error_message="" # Sets error message as empty
     customer_name = customer_name_entry.get()
-    if random_recipt_checked.get()==1: # checks if random_recipt check list has been ticked. if so, generate a random number from 100,000 to 999,999 for it. 
-        recipt_number=randint(100000,999999)
+    if random_recipt_checked.get()==1:  # checks if random_recipt check list has been ticked. if so, generate a random number from 100,000 to 999,999 for it. 
+        try:
+            if int(random_num_digit_entry.get())>15:
+                error_message+="Error! Too many digits. Please make this number less or equal to 15\n\n"     
+            else:
+                recipt_number=randint(0.1*10**int(random_num_digit_entry.get()),0.9*10**int(random_num_digit_entry.get()))
+        except:
+            error_message+="Random Recipt Digit: Please put a number, and make sure to remove any letters\n\n"
     else:
-        recipt_number = recipt_number_entry.get() # Otherwise, get the manual entry
+        recipt_number = recipt_number_entry.get()   # Otherwise, get the manual entry
 
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get()
-    error_message="" 
     try: # The reason try is used instead of type() is because all entry.get values are strings. Because of this, I used try to figure out if they can be converted into a float/int with/without errors depending on the scenario.
         test = float(customer_name)+1 
         customer_name_title["fg"]="red"#-> Since the entry can be converted without any error message, this means customer_name must be a number/float, therefore an error has to be thrownout
-        error_message="Customer name: Please put no numbers\n\n" # Adds a new errors message, and a double line break for neatness
+        error_message+="Customer name: Please put no numbers\n\n" # Adds a new errors message, and a double line break for neatness
 
     except:
         if customer_name=="": # customer name cannot be empty, however. So an error must be thrown out.
             customer_name_title["fg"]="red"
-            error_message="Customer Name: Please don't leave empty, you can put anything but numbers\n\n"
+            error_message+="Customer Name: Please don't leave empty, you can put anything but numbers\n\n"
         else:
             customer_name_title["fg"]="black" # Sets the text color back to black if no error.
         
@@ -218,6 +236,13 @@ def delete_row(event):
 
 
 def text_color_update(event): # This function updates the entry titles from red to black IF they're valid
+    # Random Recipt digit number
+    if random_recipt_checked.get()==1:
+        try:
+            if int(random_num_digit_entry.get())<16: # Checks if digit number can be converted without errors, then checks if it is less than 16. If so, change the text color to black.
+                recipt_number_title["fg"]="black"
+        except:
+            pass # Prevents errors from being thrown
     # Customer name
     if not customer_name_entry.get()=="":
         try:
