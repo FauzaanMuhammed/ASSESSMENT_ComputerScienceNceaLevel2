@@ -14,13 +14,19 @@ saved_list = save_file.readlines()  # Read all the lines of the save_data_party_
 file_length=len(saved_list) # Gets file length, so we know how many times we need to loop through it, as well where the extra line is located.
 save_file.close() # Closes the save_file
 
-new_saved_list=[] # Contains info about the new improved list.
+new_saved_list=[] # A new list to contain the new information after changes have been made to the old one.
 for i in saved_list:
     new_saved_list.append(i[0:-1]) #This the start to 2nd to last item of the list, and put it onto a new list. This is done, as the normal list includes '\n'(line breaks) at the end, which we don't want
 
 client_list=[]
-for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a bigger list. The reason multidimensional lists are used are because they allow information to be place in columns and rows better. Each list is a row, and the individul client information ie. Customer Name, are columns. 
-    client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
+try:    
+    for i in range(0,file_length,5): # This function puts 5 of every item into a list, which is put onto a bigger list. The reason multidimensional lists are used are because they allow information to be place in columns and rows better. Each list is a row, and the individul client information ie. Customer Name, are columns. 
+        client_list.append([new_saved_list[i],new_saved_list[i+1],new_saved_list[i+2],new_saved_list[i+3],new_saved_list[i+4]])
+except:
+    save_file = open("save_data_party_hire.txt","w")
+    save_file.write("")
+    save_file.close()
+    messagebox.showwarning("Data Modified or Corrupted","You save data has been modified/corrupted, and data couldn't be added to the treeview. We've had to clear you data.\n\n Sorry for the inconvinience!")
 
 deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),10))
 deletion_instruction_title.place(x=330,y=355) # This tells user instructions on how to the enter key to delete rows
@@ -182,18 +188,18 @@ def main_function():
         client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
-        file = open("save_data_party_hire.txt","w")
+        file = open("save_data_party_hire.txt","w") # Open file in w mode to overwrite text in the txt file,
         file.write("") # Clears save_data_party_hire
         file.close()
 
-        file=open("save_data_party_hire.txt","a")
+        file=open("save_data_party_hire.txt","a") # Opens file again in a mode to append information
         for i in client_list:
             for x in range(5): # Uses a nested for loop through the 2 dimensional list to get each values of the list's list 5 items.
-                file.write(f"{i[x]}\n") 
+                file.write(f"{i[x]}\n") # write the information with in new line, so each information has it's own line, able to be accessed by .readline() when data is being loaded
         file.close()
 
     else:
-        messagebox.showerror("Error!",error_message)
+        messagebox.showerror("Error!",error_message) # If errors are present, show the error in a seperate window
   
 def delete_row(event):
 
@@ -204,7 +210,7 @@ def delete_row(event):
         
         # Deletion of the selected row. 
         row_deleted = full_selected_list["values"][0]
-        client_list.pop(row_deleted-1) # Since the row value is 1 greater than it normaly is, we must -1 to normalize the pop function
+        client_list.pop(row_deleted-1) # Since the row value is 1 greater than it normaly is, we must -1 to normalize the pop function and delete the correct row
         
         # Deletion of selected rows
         item_selected = treeview.selection()[0] # Treeview returns the tuple of selected items.[0] is the part of the tuple that needs to be deleted
@@ -235,7 +241,7 @@ def delete_row(event):
 
 
 
-def text_color_update(event): # This function updates the entry titles from red to black IF they're valid
+def text_color_update(event): # This function updates the entry titles from red to black IF they're valid. This will help users to figure if when they've got a correct input
     # Random Recipt digit number
     if random_recipt_checked.get()==1:
         try:
@@ -250,7 +256,7 @@ def text_color_update(event): # This function updates the entry titles from red 
         except:
             customer_name_title["fg"]="black"
     # Item_hired
-    if not item_hired_entry.get()=="":
+    if not item_hired_entry.get()=="": # If item_hired_entry.get() is not empty, make it valid.
         item_hired_title["fg"]="black"
     # Num_item_hired
     try:
@@ -261,11 +267,11 @@ def text_color_update(event): # This function updates the entry titles from red 
         pass
    
 root.bind("<Return>",delete_row) #The delete row function fires when enter(Return) is pressed
-root.bind("<Motion>",text_color_update) # text_color_update runs whenever there is motion detected is the mouse
+root.bind("<Motion>",text_color_update) # text_color_update runs whenever there is motion detected in the mouse
 #Enter Data Button
 enter_data_button=Button(root,width="14",text="enter data",font=(("Arial"),14),command=main_function)
 enter_data_button.place(x=500,y=310)
 
 root.title("Julie's Party Hire")
-root.geometry("1200x800-40+0")
+root.geometry("1200x800-40+0") # 1200X800 window shifted 40X to the left so the window is in the middle of the screen
 root.mainloop() # Loops the tkinter so it is always running
