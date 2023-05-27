@@ -26,7 +26,7 @@ except:
     save_file = open("save_data_party_hire.txt","w")
     save_file.write("")
     save_file.close()
-    messagebox.showwarning("Data Modified or Corrupted","You save data has been modified/corrupted, and data couldn't be added to the treeview. We've had to clear you data.\n\n Sorry for the inconvinience!")
+    messagebox.showwarning("Data Modified or Corrupted","You save data has been modified/corrupted, and data couldn't be added to the treeview. We've had to clear your data.\n\n Sorry for the inconvinience!")
 
 deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),10))
 deletion_instruction_title.place(x=330,y=355) # This tells user instructions on how to the enter key to delete rows
@@ -139,10 +139,10 @@ def main_function():
         except:
             error_message+="Random Recipt Digit: Please put a number from 1-15, and make sure to remove any letters\n\n"
     else:
-        recipt_number = recipt_number_entry.get()   # Otherwise, get the manual entry
+        recipt_number = recipt_number_entry.get().strip("`~-/ .")   # Otherwise, get the manual entry .strip removes any `,~,/,whitespace and . characters present, which the user may have mistakingly put in
 
     item_hired = item_hired_entry.get()
-    num_item_hired = num_item_hired_entry.get()
+    num_item_hired = num_item_hired_entry.get().strip("`~-/ .") 
     try: # The reason try is used instead of type() is because all entry.get values are strings. Because of this, I used try to figure out if they can be converted into a float/int with/without errors depending on the scenario.
         test = float(customer_name)+1 
         customer_name_title["fg"]="red"#-> Since the entry can be converted without any error message, this means customer_name must be a number/float, therefore an error has to be thrownout
