@@ -30,12 +30,12 @@ except:
 
 deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),10))
 deletion_instruction_title.place(x=330,y=355) # This tells user instructions on how to the enter key to delete rows
-column_list=("row_number","customer_name","recipt_number","item_hired","number_hired") 
+column_list=("row_number","customer_name","receipt_number","item_hired","number_hired") 
 treeview = ttk.Treeview(root,columns=column_list,height=11)
 treeview.column("#0", width=0) # Hides the unused row
 treeview.heading("row_number",text="Row");treeview.column("#1", width=45)
 treeview.heading("customer_name",text="Customer Name")# The heading for the treeview.
-treeview.heading("recipt_number",text="Recipt Number")
+treeview.heading("receipt_number",text="receipt Number")
 treeview.heading("item_hired",text="Item Hired")
 treeview.heading("number_hired",text="Number Hired");treeview.column("#5", width=150) # Fixed widths stop other elements from pushing columns
 treeview.place(x=200,y=380)
@@ -48,20 +48,20 @@ treeview_scrollbar.place(x=979, y=420, height=180)
 treeview.configure(yscrollcommand=treeview_scrollbar.set)
 
 
-def random_recipt_checkbox_action():
+def random_receipt_checkbox_action():
 
-    if random_recipt_checked.get()==1: # If checkbox is on
-        recipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the recipt_number entry
+    if random_receipt_checked.get()==1: # If checkbox is on
+        receipt_number_entry["state"]=DISABLED # if checkbox is on, disabled the receipt_number entry
 
         random_num_digit_entry.place(x=570,y=282)
-        random_recipt_checkbox["text"]="random value(digits)"# Tells users that the entry placed is for the digits
+        random_receipt_checkbox["text"]="random value(digits)"# Tells users that the entry placed is for the digits
 
-        if recipt_number_entry.get()=="": # If the recipt_number entry is empty
-            recipt_number_title["fg"]="black" # -> Display the recipt number title as black, to prevent confusion. 
+        if receipt_number_entry.get()=="": # If the receipt_number entry is empty
+            receipt_number_title["fg"]="black" # -> Display the receipt number title as black, to prevent confusion. 
     else:
-        recipt_number_entry["state"]=NORMAL   # otherwise, it is enabled
+        receipt_number_entry["state"]=NORMAL   # otherwise, it is enabled
         random_num_digit_entry.place_forget()
-        random_recipt_checkbox["text"]="random value"
+        random_receipt_checkbox["text"]="random value"
 
 #Image
 placeholder = Label(root,text="",height="15",width=5)
@@ -85,7 +85,7 @@ def quit():  # The function for quitting. Works by destroying the tkinter GUI
 help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
-    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\n\nPress enter to delete rows when you have clicked them. A clicked row will be blue. Once the row is blue then pressing enter will delete that row.\n\nIf you would like to generate a random recipt number, tick the 'random recipt' tickbox and input a number between 1 and 15.\n\nThe table also has a scrollbar to navigate through the table.\n\nData is automatically saved.")
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\n\nPress enter to delete rows when you have clicked them. A clicked row will be blue. Once the row is blue then pressing enter will delete that row.\n\nIf you would like to generate a random receipt number, tick the 'random receipt' tickbox and input a number between 1 and 15.\n\nThe table also has a scrollbar to navigate through the table.\n\nData is automatically saved.")
 help_button.configure(command=help_popup) # Makes the help_button put the messagebox out when clicked.
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="31") # width=31 Seperates the entries
@@ -94,19 +94,19 @@ customer_name_title.grid(column=1,row=1,)                                   # ->
 customer_name_entry = Entry(root,width="25") 
 customer_name_entry.grid(column=1,row=2)
 
-#Recipt Number title and entry
-recipt_number_title = Label(root,text="Recipt Number",font=(("Arial"),14)) # Width=33 is not used, as width covers both
-recipt_number_title.grid(column=2,row=1)   
+#receipt Number title and entry
+receipt_number_title = Label(root,text="receipt Number",font=(("Arial"),14)) # Width=33 is not used, as width covers both
+receipt_number_title.grid(column=2,row=1)   
                                                             # To the right and left of the element        
-recipt_number_entry = Entry(root,width="25")                # Therefore, it only needs to be used for every odd element
-recipt_number_entry.grid(column=2,row=2)
+receipt_number_entry = Entry(root,width="25")                # Therefore, it only needs to be used for every odd element
+receipt_number_entry.grid(column=2,row=2)
 
-#Random Recipt Number Checkbox
-random_recipt_checked  = tk.IntVar()
-random_recipt_checkbox = Checkbutton(root,text="random value",variable=random_recipt_checked,command=random_recipt_checkbox_action,font=(("Arial bold"),12)) # changes the font from default settings to make the text easier to see.
-random_recipt_checkbox.grid(column=2,row=3)
+#Random receipt Number Checkbox
+random_receipt_checked  = tk.IntVar()
+random_receipt_checkbox = Checkbutton(root,text="random value",variable=random_receipt_checked,command=random_receipt_checkbox_action,font=(("Arial bold"),12)) # changes the font from default settings to make the text easier to see.
+random_receipt_checkbox.grid(column=2,row=3)
 
-# Random recipt number digit entry
+# Random receipt number digit entry
 random_num_digit_entry = Entry(root,width="3")
 random_num_digit_entry.place(x=570,y=282)
 random_num_digit_entry.place_forget() # By default, this is disabled, as manual entry is turned on by default.
@@ -130,16 +130,16 @@ num_item_hired_entry.grid(column=4,row=2)
 def main_function():
     error_message="" # Sets error message as empty
     customer_name = customer_name_entry.get()
-    if random_recipt_checked.get()==1:  # checks if random_recipt check list has been ticked. if so, generate a random number from 100,000 to 999,999 for it. 
+    if random_receipt_checked.get()==1:  # checks if random_receipt check list has been ticked. if so, generate a random number from 100,000 to 999,999 for it. 
         try:
             if int(random_num_digit_entry.get())>15:
-                error_message+="Random Recipt Digit: Too many digits. Please make this number is in the range of 1-15\n\n"     
+                error_message+="Random receipt Digit: Too many digits. Please make this number is in the range of 1-15\n\n"     
             else:
-                recipt_number=randint(0.1*10**int(random_num_digit_entry.get()),0.9*10**int(random_num_digit_entry.get()))
+                receipt_number=randint(0.1*10**int(random_num_digit_entry.get()),0.9*10**int(random_num_digit_entry.get()))
         except:
-            error_message+="Random Recipt Digit: Please put a number from 1-15, and make sure to remove any letters\n\n"
+            error_message+="Random receipt Digit: Please put a number from 1-15, and make sure to remove any letters\n\n"
     else:
-        recipt_number = recipt_number_entry.get().strip("`~-/ .")   # Otherwise, get the manual entry .strip removes any `,~,/,whitespace and . characters present, which the user may have mistakingly put in
+        receipt_number = receipt_number_entry.get().strip("`~-/ .")   # Otherwise, get the manual entry .strip removes any `,~,/,whitespace and . characters present, which the user may have mistakingly put in
 
     item_hired = item_hired_entry.get()
     num_item_hired = num_item_hired_entry.get().strip("`~-/ .") 
@@ -157,13 +157,13 @@ def main_function():
         
 
     try:
-        test=int(recipt_number)+1 #Try adding 1 to the recipt number.
-        recipt_number_title["fg"]="black"
+        test=int(receipt_number)+1 #Try adding 1 to the receipt number.
+        receipt_number_title["fg"]="black"
         
     except:           
-        recipt_number_title["fg"]="red"
-        if not random_recipt_checked.get()==1: # If the recipt checkbox is not chcked, and the checbox is empty, give the user an error, as a value must be given for manual recipt
-            error_message+="Recipt number: Please put any number. Make sure to remove any letters, or tick the tickbox for generating a random recipt.\n\n"
+        receipt_number_title["fg"]="red"
+        if not random_receipt_checked.get()==1: # If the receipt checkbox is not chcked, and the checbox is empty, give the user an error, as a value must be given for manual receipt
+            error_message+="receipt number: Please put any number. Make sure to remove any letters, or tick the tickbox for generating a random receipt.\n\n"
 
     if item_hired=="":
         error_message+="item hired: Please put don't leave this empty\n\n"
@@ -185,7 +185,7 @@ def main_function():
         for i in treeview.get_children():
             treeview.delete(i)     
 
-        client_list.append([len(client_list)+1,customer_name,recipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
+        client_list.append([len(client_list)+1,customer_name,receipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
         file = open("save_data_party_hire.txt","w") # Open file in w mode to overwrite text in the txt file,
@@ -242,11 +242,11 @@ def delete_row(event):
 
 
 def text_color_update(event): # This function updates the entry titles from red to black IF they're valid. This will help users to figure if when they've got a correct input
-    # Random Recipt digit number
-    if random_recipt_checked.get()==1:
+    # Random receipt digit number
+    if random_receipt_checked.get()==1:
         try:
             if int(0<random_num_digit_entry.get())<16: # Checks if digit number can be converted without errors, then checks if it is less than 16. If so, change the text color to black.
-                recipt_number_title["fg"]="black"
+                receipt_number_title["fg"]="black"
         except:
             pass # Prevents errors from being thrown
     # Customer name
