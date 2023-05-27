@@ -79,7 +79,7 @@ def quit():  # The function for quitting. Works by destroying the tkinter GUI
 help_button = Button(root,text="❓Help",bg="#3498DB")
 help_button.place(x=1145,y=30)
 def help_popup():
-    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\n\nPress enter to delete rows when you have clicked them. A clicked row will be blue. Once the row is blue then pressing enter will delete that row.\n\nThe table also has a scrollbar to navigate through the table.\n\nData is automatically saved.")
+    messagebox.showinfo("Help","If you enter data and an error shows up, follow the instructions and then enter you data. The color of the text will change from red to black if it is valid.\n\nPress enter to delete rows when you have clicked them. A clicked row will be blue. Once the row is blue then pressing enter will delete that row.\n\nIf you would like to generate a random recipt number, tick the 'random recipt' tickbox and input a number between 1 and 15.\n\nThe table also has a scrollbar to navigate through the table.\n\nData is automatically saved.")
 help_button.configure(command=help_popup) # Makes the help_button put the messagebox out when clicked.
 #Customer name title and entry
 customer_name_title = Label(root,text="Customer Name",font=(("Arial"),14),width="31") # width=31 Seperates the entries
@@ -127,11 +127,11 @@ def main_function():
     if random_recipt_checked.get()==1:  # checks if random_recipt check list has been ticked. if so, generate a random number from 100,000 to 999,999 for it. 
         try:
             if int(random_num_digit_entry.get())>15:
-                error_message+="Error! Too many digits. Please make this number less or equal to 15\n\n"     
+                error_message+="Random Recipt Digit: Too many digits. Please make this number is in the range of 1-15\n\n"     
             else:
                 recipt_number=randint(0.1*10**int(random_num_digit_entry.get()),0.9*10**int(random_num_digit_entry.get()))
         except:
-            error_message+="Random Recipt Digit: Please put a number, and make sure to remove any letters\n\n"
+            error_message+="Random Recipt Digit: Please put a number from 1-15, and make sure to remove any letters\n\n"
     else:
         recipt_number = recipt_number_entry.get()   # Otherwise, get the manual entry
 
@@ -239,7 +239,7 @@ def text_color_update(event): # This function updates the entry titles from red 
     # Random Recipt digit number
     if random_recipt_checked.get()==1:
         try:
-            if int(random_num_digit_entry.get())<16: # Checks if digit number can be converted without errors, then checks if it is less than 16. If so, change the text color to black.
+            if int(0<random_num_digit_entry.get())<16: # Checks if digit number can be converted without errors, then checks if it is less than 16. If so, change the text color to black.
                 recipt_number_title["fg"]="black"
         except:
             pass # Prevents errors from being thrown
