@@ -43,7 +43,7 @@ treeview.place(x=200,y=380)
 for i in client_list: # This for loop will insert the client information on each row there is on the list.
     treeview.insert("",tk.END,values=i)
     
-treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
+treeview_scrollbar = ttk.Scrollbar(root, orient="vertical", command=treeview.yview) # the command will scroll the scrollbar on the treeview in the y axis.
 treeview_scrollbar.place(x=979, y=420, height=180)
 treeview.configure(yscrollcommand=treeview_scrollbar.set)
 
@@ -95,7 +95,7 @@ customer_name_entry = Entry(root,width="25")
 customer_name_entry.grid(column=1,row=2)
 
 #receipt Number title and entry
-receipt_number_title = Label(root,text="Receipt Number",font=(("Arial"),14)) # Width=33 is not used, as width covers both
+receipt_number_title = Label(root,text="Receipt Number",font=(("Arial"),14)) # Width=31 is not used, as width covers both
 receipt_number_title.grid(column=2,row=1)   
                                                             # To the right and left of the element        
 receipt_number_entry = Entry(root,width="25")                # Therefore, it only needs to be used for every odd element
@@ -188,6 +188,8 @@ def main_function():
         client_list.append([len(client_list)+1,customer_name,receipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
+            
+        # Opening File, clearing it and adding back the treeview contents onto it for saving.
         file = open("save_data_party_hire.txt","w") # Open file in w mode to overwrite text in the txt file,
         file.write("") # Clears save_data_party_hire
         file.close()
@@ -226,6 +228,7 @@ def delete_row(event): # The Event parameter allows a keyboard press to be binde
         for i in client_list:
             treeview.insert("",tk.END,values=i)
 
+        # Opening File, clearing it and adding back the treeview contents onto it for saving.
         file = open("save_data_party_hire.txt","w")
         file.write("") # Clears save_data_party_hire
         file.close()
