@@ -188,7 +188,7 @@ def main_function():
         client_list.append([len(client_list)+1,customer_name,receipt_number,item_hired,num_item_hired]) #All information from the entries is appended onto the end of global list
         for i in client_list:
             treeview.insert("",tk.END,values=i) # Adds back client_list onto treeview after it has been reassigned
-            
+
         # Opening File, clearing it and adding back the treeview contents onto it for saving.
         file = open("save_data_party_hire.txt","w") # Open file in w mode to overwrite text in the txt file,
         file.write("") # Clears save_data_party_hire
@@ -245,14 +245,23 @@ def delete_row(event): # The Event parameter allows a keyboard press to be binde
 
 
 def text_color_update(event): # This function updates the entry titles from red to black IF they're valid. This will help users to figure if when they've got a correct input
-    # Random receipt digit number
+
+    # Random receipt digit number. checking if the random recipt checbox is on. if so, check if num of digits is 1-15. If so, make text black as it is now valid.
     if random_receipt_checked.get()==1:
         try:
-            if 0<int(random_num_digit_entry.get())<16: # Checks if digit number can be converted without errors, then checks if it is less than 16. If so, change the text color to black.
+            if 0<int(random_num_digit_entry.get())<16: 
                 receipt_number_title["fg"]="black"
         except:
             pass # Prevents errors from being thrown
-    # Customer name
+    # Random receipt -  no checkbox. Just checks if recipt number entry can be converted without errors
+    else:
+        try:
+            int(receipt_number_entry.get())
+            receipt_number_title["fg"]="black"
+        except:
+            pass
+
+    # Customer name -  Checking if it not empty, then if it isn't a integer. If so, make the text valid
     if not customer_name_entry.get()=="":
         try:
             test = int(customer_name_entry.get())
