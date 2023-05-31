@@ -28,8 +28,8 @@ except: # If the save file cannot be loaded onto the treeview without any errors
     save_file.close()
     messagebox.showwarning("Data Modified or Corrupted","You save data has been modified/corrupted, and data couldn't be added to the treeview. We've had to clear your data.\n\n Sorry for the inconvinience!")
 
-deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),10))
-deletion_instruction_title.place(x=330,y=355) # This tells user instructions on how to the enter key to delete rows
+deletion_instruction_title=Label(root,text="Press the 'Enter' key to delete rows you have clicked. Data is automatically saved",font=(("arial bold"),11))
+deletion_instruction_title.place(x=300,y=355) # This tells user instructions on how to the enter key to delete rows
 column_list=("row_number","customer_name","receipt_number","item_hired","number_hired") 
 treeview = ttk.Treeview(root,columns=column_list,height=11)
 treeview.column("#0", width=0) # Hides the unused row
